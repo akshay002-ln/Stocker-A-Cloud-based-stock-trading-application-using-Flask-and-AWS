@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="row mb-4">
+
+<div class="col">
+<h2 class="fw-bold">Registered Traders</h2>
+<p class="text-muted">Manage traders registered in the platform</p>
+</div>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<div class="table-responsive">
+
+<table class="table table-striped table-hover align-middle">
+
+<thead class="table-dark">
+
+<tr>
+<th>Trader ID</th>
+<th>Username</th>
+<th>Email</th>
+<th>Role</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for trader in traders %}
+
+<tr>
+
+<td>{{ trader.id }}</td>
+
+<td>
+<strong>{{ trader.username }}</strong>
+</td>
+
+<td>{{ trader.email }}</td>
+
+<td>
+<span class="badge bg-success">
+{{ trader.role }}
+</span>
+</td>
+
+<td>
+
+<a href="{{ url_for('service03') }}"
+class="btn btn-sm btn-info">
+
+<i class="bi bi-briefcase"></i>
+Portfolio
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="row mt-4">
+
+<div class="col-md-4">
+
+<div class="card text-center p-3">
+
+<h6 class="text-muted">Total Traders</h6>
+
+<h3 class="fw-bold">{{ traders|length }}</h3>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

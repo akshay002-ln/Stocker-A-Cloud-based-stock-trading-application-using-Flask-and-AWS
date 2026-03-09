@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="row mb-4">
+
+<div class="col">
+<h2 class="fw-bold">Transaction Records</h2>
+<p class="text-muted">Monitor all stock trading activities</p>
+</div>
+
+</div>
+
+
+<div class="card shadow-sm">
+
+<div class="card-body">
+
+<div class="table-responsive">
+
+<table class="table table-striped table-hover align-middle">
+
+<thead class="table-dark">
+
+<tr>
+<th>ID</th>
+<th>User</th>
+<th>Stock</th>
+<th>Action</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Total</th>
+<th>Status</th>
+<th>Date</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for transaction in transactions %}
+
+<tr>
+
+<td>{{ transaction.id }}</td>
+
+<td>
+<strong>{{ transaction.user.username }}</strong><br>
+<small class="text-muted">{{ transaction.user.email }}</small>
+</td>
+
+<td>
+<strong>{{ transaction.stock.symbol }}</strong><br>
+<small class="text-muted">{{ transaction.stock.name }}</small>
+</td>
+
+<td>
+<span class="badge {% if transaction.action == 'buy' %}bg-success{% else %}bg-danger{% endif %}">
+{{ transaction.action|capitalize }}
+</span>
+</td>
+
+<td>{{ transaction.quantity }}</td>
+
+<td>₹{{ transaction.price }}</td>
+
+<td>
+₹{{ (transaction.quantity * transaction.price)|round(2) }}
+</td>
+
+<td>
+<span class="badge 
+{% if transaction.status == 'completed' %}bg-success
+{% elif transaction.status == 'pending' %}bg-warning
+{% else %}bg-danger{% endif %}">
+{{ transaction.status }}
+</span>
+</td>
+
+<td>
+{{ transaction.transaction_date }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Dashboard Summary -->
+
+<div class="row mt-4 g-3">
+
+<div class="col-md-4">
+
+<div class="card text-center p-3">
+
+<h6 class="text-muted">Total Transactions</h6>
+
+<h3 class="fw-bold">{{ transactions|length }}</h3>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card text-center p-3 bg-success text-white">
+
+<h6>Buy Transactions</h6>
+
+<h3>{{ transactions|selectattr('action','equalto','buy')|list|length }}</h3>
+
+</div>
+
+</div>
+
+
+<div class="col-md-4">
+
+<div class="card text-center p-3 bg-danger text-white">
+
+<h6>Sell Transactions</h6>
+
+<h3>{{ transactions|selectattr('action','equalto','sell')|list|length }}</h3>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

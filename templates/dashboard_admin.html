@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="row mb-4">
+
+<div class="col">
+<h2 class="fw-bold">Admin Dashboard</h2>
+<p class="text-muted">Manage traders, transactions and portfolios</p>
+</div>
+
+</div>
+
+<!-- Dashboard Statistics -->
+
+<div class="row g-4 mb-4">
+
+<div class="col-lg-4">
+
+<div class="card shadow-sm border-0">
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+<h6 class="text-muted">Total Traders</h6>
+<h3 class="fw-bold">{{ traders|length if traders else 0 }}</h3>
+</div>
+
+<div class="bg-success text-white p-3 rounded">
+<i class="bi bi-people fs-4"></i>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<div class="col-lg-4">
+
+<div class="card shadow-sm border-0">
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+<h6 class="text-muted">Total Transactions</h6>
+<h3 class="fw-bold">{{ transactions|length if transactions else 0 }}</h3>
+</div>
+
+<div class="bg-primary text-white p-3 rounded">
+<i class="bi bi-file-earmark-text fs-4"></i>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+
+<div class="col-lg-4">
+
+<div class="card shadow-sm border-0">
+<div class="card-body">
+
+<div class="d-flex justify-content-between align-items-center">
+
+<div>
+<h6 class="text-muted">Total Portfolios</h6>
+<h3 class="fw-bold">{{ portfolios|length if portfolios else 0 }}</h3>
+</div>
+
+<div class="bg-warning text-white p-3 rounded">
+<i class="bi bi-briefcase fs-4"></i>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Admin Services -->
+
+<div class="row g-4">
+
+<div class="col-lg-4">
+
+<div class="card shadow-sm border-0 text-center p-4">
+
+<i class="bi bi-people fs-1 text-success mb-3"></i>
+
+<h5>View Traders</h5>
+
+<p class="text-muted">
+Manage all registered traders on the platform.
+</p>
+
+<a href="{{ url_for('service01') }}" class="btn btn-success">
+Open
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4">
+
+<div class="card shadow-sm border-0 text-center p-4">
+
+<i class="bi bi-file-earmark-text fs-1 text-primary mb-3"></i>
+
+<h5>View Transactions</h5>
+
+<p class="text-muted">
+Monitor all trade transactions on the platform.
+</p>
+
+<a href="{{ url_for('service02') }}" class="btn btn-primary">
+Open
+</a>
+
+</div>
+
+</div>
+
+
+<div class="col-lg-4">
+
+<div class="card shadow-sm border-0 text-center p-4">
+
+<i class="bi bi-briefcase fs-1 text-warning mb-3"></i>
+
+<h5>View Portfolios</h5>
+
+<p class="text-muted">
+Monitor all trader portfolios on the platform.
+</p>
+
+<a href="{{ url_for('service03') }}" class="btn btn-warning">
+Open
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

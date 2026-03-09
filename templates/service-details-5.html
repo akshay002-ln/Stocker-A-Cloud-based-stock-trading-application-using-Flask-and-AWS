@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<!-- Page Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div>
+<h2 class="fw-bold">My Portfolio</h2>
+<p class="text-muted mb-0">Track your investments and performance</p>
+</div>
+
+</div>
+
+<!-- Portfolio Summary -->
+
+{% set total_value = 0 %}
+{% for item in portfolio %}
+{% set total_value = total_value + (item.quantity * item.stock.price) %}
+{% endfor %}
+
+<div class="row mb-4">
+
+<div class="col-md-4">
+
+<div class="card shadow-sm border-0">
+<div class="card-body">
+
+<h6 class="text-muted">Total Holdings</h6>
+<h3>{{ portfolio|length }}</h3>
+
+</div>
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow-sm border-0">
+<div class="card-body">
+
+<h6 class="text-muted">Portfolio Value</h6>
+
+<h3>
+₹{{ total_value|round(2) }}
+</h3>
+
+</div>
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card shadow-sm border-0">
+<div class="card-body">
+
+<h6 class="text-muted">Unique Stocks</h6>
+
+<h3>
+{{ portfolio|length }}
+</h3>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- Holdings Section -->
+
+<div class="card shadow-sm mb-4">
+
+<div class="card-header bg-dark text-white">
+<h5 class="mb-0">Current Holdings</h5>
+</div>
+
+<div class="card-body">
+
+{% if portfolio %}
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle">
+
+<thead class="table-dark">
+
+<tr>
+<th>Symbol</th>
+<th>Company</th>
+<th>Quantity</th>
+<th>Avg Price</th>
+<th>Current Price</th>
+<th>Market Value</th>
+<th>Profit / Loss</th>
+<th style="width:160px;">Trade</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in portfolio %}
+
+{% set current_value = item.quantity * item.stock.price %}
+{% set purchase_value = item.quantity * item.average_price %}
+{% set profit_loss = current_value - purchase_value %}
+
+<tr>
+
+<td>
+<span class="badge bg-secondary fs-6">
+{{ item.stock.symbol }}
+</span>
+</td>
+
+<td>
+<strong>{{ item.stock.name }}</strong>
+</td>
+
+<td>{{ item.quantity }}</td>
+
+<td>₹{{ item.average_price }}</td>
+
+<td class="fw-bold text-success">
+₹{{ item.stock.price }}
+</td>
+
+<td class="fw-bold">
+₹{{ current_value|round(2) }}
+</td>
+
+<td class="fw-bold {% if profit_loss >= 0 %}text-success{% else %}text-danger{% endif %}">
+
+₹{{ profit_loss|round(2) }}
+
+{% if profit_loss >= 0 %} <i class="bi bi-arrow-up"></i>
+{% else %} <i class="bi bi-arrow-down"></i>
+{% endif %}
+
+</td>
+
+<td>
+
+<div class="d-flex gap-2">
+
+<a href="{{ url_for('buy_stock', stock_id=item.stock.id) }}"
+class="btn btn-success btn-sm"> <i class="bi bi-cart-plus"></i> </a>
+
+<a href="{{ url_for('sell_stock', stock_id=item.stock.id) }}"
+class="btn btn-outline-danger btn-sm"> <i class="bi bi-cash-stack"></i> </a>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+You don't own any stocks yet.
+
+<a href="{{ url_for('service04') }}" class="alert-link">
+Browse stocks
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<!-- Portfolio Chart -->
+
+<div class="card shadow-sm mb-4">
+
+<div class="card-header bg-dark text-white">
+Portfolio Distribution
+</div>
+
+<div class="card-body">
+
+<canvas id="portfolioChart"></canvas>
+
+</div>
+
+</div>
+
+<!-- Transaction History -->
+
+<div class="card shadow-sm">
+
+<div class="card-header bg-primary text-white">
+<h5 class="mb-0">Transaction History</h5>
+</div>
+
+<div class="card-body">
+
+{% if transactions %}
+
+<div class="table-responsive">
+
+<table class="table table-hover">
+
+<thead class="table-dark">
+
+<tr>
+<th>Date</th>
+<th>Action</th>
+<th>Symbol</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Total</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for transaction in transactions %}
+
+<tr>
+
+<td>{{ transaction.transaction_date }}</td>
+
+<td class="{% if transaction.action == 'buy' %}text-success{% else %}text-danger{% endif %}">
+<strong>{{ transaction.action|upper }}</strong>
+</td>
+
+<td>{{ transaction.stock.symbol }}</td>
+
+<td>{{ transaction.quantity }}</td>
+
+<td>₹{{ transaction.price }}</td>
+
+<td>₹{{ (transaction.quantity * transaction.price)|round(2) }}</td>
+
+<td>
+<span class="badge bg-success">
+{{ transaction.status }}
+</span>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-info">
+
+No transactions yet.
+
+<a href="{{ url_for('service04') }}" class="alert-link">
+Start trading
+</a>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('portfolioChart');
+
+new Chart(ctx, {
+
+type: 'doughnut',
+
+data: {
+
+labels: [
+
+{% for item in portfolio %}
+"{{ item.stock.symbol }}",
+{% endfor %}
+
+],
+
+datasets: [{
+
+label: 'Portfolio Value',
+
+data: [
+
+{% for item in portfolio %}
+{{ item.quantity * item.stock.price }},
+{% endfor %}
+
+],
+
+borderWidth: 1
+
+}]
+
+},
+
+options: {
+
+responsive: true,
+
+plugins: {
+
+legend: {
+position: 'bottom'
+}
+
+}
+
+}
+
+});
+
+</script>
+
+{% endblock %}

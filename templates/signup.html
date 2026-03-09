@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Create Account | Stocker</title>
+
+<link href="{{ url_for('static', filename='img/logo stocker.png') }}" rel="icon">
+
+<link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+<style>
+
+body{
+background:#f4f6f9;
+font-family:Poppins;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.signup-card{
+width:420px;
+border:none;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.logo{
+text-align:center;
+margin-bottom:20px;
+}
+
+.logo img{
+height:50px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card signup-card p-4">
+
+<div class="logo">
+
+<img src="{{ url_for('static', filename='img/logo stocker.png') }}">
+
+<h4 class="mt-2">STOCKER</h4>
+
+<p class="text-muted">Create your trading account</p>
+
+</div>
+
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+
+<div class="alert alert-danger">
+{{ messages[0] }}
+</div>
+
+{% endif %}
+{% endwith %}
+
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label class="form-label">Role</label>
+
+<select class="form-select" name="role" required>
+
+<option value="">Select role</option>
+<option value="trader">Trader</option>
+<option value="admin">Admin</option>
+
+</select>
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Username</label>
+
+<input type="text" name="username" class="form-control" required>
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Email</label>
+
+<input type="email" name="email" class="form-control" required>
+
+</div>
+
+
+<div class="mb-3">
+
+<label class="form-label">Password</label>
+
+<input type="password" name="password" class="form-control" required>
+
+</div>
+
+
+<button class="btn btn-success w-100">
+
+<i class="bi bi-person-plus"></i>
+Create Account
+
+</button>
+
+</form>
+
+
+<div class="text-center mt-3">
+
+<p>
+
+Already have an account?
+
+<a href="{{ url_for('login') }}">
+Login
+</a>
+
+</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

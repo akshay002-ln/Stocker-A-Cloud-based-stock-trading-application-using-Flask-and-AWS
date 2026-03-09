@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Stocker Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+
+body{
+background:#f4f6f9;
+font-family:'Segoe UI',sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#16a34a;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.navbar-brand{
+font-weight:bold;
+letter-spacing:1px;
+}
+
+
+/* SIDEBAR */
+
+.sidebar{
+height:100vh;
+background:#1f2937;
+color:white;
+padding-top:25px;
+position:fixed;
+width:230px;
+overflow-y:auto;
+}
+
+.sidebar h5{
+padding-left:20px;
+margin-bottom:20px;
+color:#9ca3af;
+}
+
+.sidebar a{
+display:block;
+color:#d1d5db;
+padding:12px 20px;
+text-decoration:none;
+transition:0.2s;
+font-size:15px;
+}
+
+.sidebar a:hover{
+background:#16a34a;
+color:white;
+}
+
+.sidebar i{
+margin-right:10px;
+}
+
+
+/* MAIN CONTENT */
+
+.main-content{
+margin-left:230px;
+padding:30px;
+min-height:100vh;
+}
+
+
+/* CARDS */
+
+.card{
+border:none;
+border-radius:12px;
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+
+/* MOBILE */
+
+@media (max-width:768px){
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+}
+
+.main-content{
+margin-left:0;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark px-4 fixed-top">
+
+<span class="navbar-brand text-white">
+
+<i class="bi bi-graph-up-arrow"></i> STOCKER
+
+</span>
+
+<div>
+
+<span class="text-white me-3">
+
+<i class="bi bi-person-circle"></i>
+
+{{ session.role|capitalize }}
+
+</span>
+
+<a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">
+
+Logout
+
+</a>
+
+</div>
+
+</nav>
+
+
+
+<div class="sidebar">
+
+<h5>Dashboard</h5>
+
+{% if session.role == "admin" %}
+
+<a href="{{ url_for('dashboard_admin') }}">
+<i class="bi bi-speedometer2"></i> Admin Dashboard
+</a>
+
+<a href="{{ url_for('service01') }}">
+<i class="bi bi-people"></i> Traders
+</a>
+
+<a href="{{ url_for('service02') }}">
+<i class="bi bi-file-earmark-text"></i> Transactions
+</a>
+
+<a href="{{ url_for('service03') }}">
+<i class="bi bi-briefcase"></i> Portfolios
+</a>
+
+{% else %}
+
+<a href="{{ url_for('dashboard_trader') }}">
+<i class="bi bi-speedometer2"></i> Trader Dashboard
+</a>
+
+<a href="{{ url_for('service04') }}">
+<i class="bi bi-graph-up-arrow"></i> Stock Market
+</a>
+
+<a href="{{ url_for('service05') }}">
+<i class="bi bi-wallet2"></i> My Portfolio
+</a>
+
+{% endif %}
+
+</div>
+
+
+
+<div class="main-content">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+</body>
+</html>

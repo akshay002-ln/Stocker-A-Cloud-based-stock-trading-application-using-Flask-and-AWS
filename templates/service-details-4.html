@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<!-- Page Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<div>
+<h2 class="fw-bold">Stock Market</h2>
+<p class="text-muted mb-0">Browse available stocks and trade instantly</p>
+</div>
+
+<div class="badge bg-success p-2">
+<i class="bi bi-circle-fill"></i> Market Open
+</div>
+
+</div>
+
+<!-- Search Bar -->
+
+<div class="row mb-3">
+
+<div class="col-md-4">
+
+<input type="text"
+id="stockSearch"
+class="form-control"
+placeholder="Search stock symbol or company">
+
+</div>
+
+</div>
+
+<!-- Stock Table -->
+
+<div class="card shadow-sm border-0">
+
+<div class="card-body">
+
+<div class="table-responsive">
+
+<table class="table table-hover align-middle" id="stockTable">
+
+<thead class="table-dark">
+
+<tr>
+<th>Symbol</th>
+<th>Company</th>
+<th>Sector</th>
+<th>Price</th>
+<th>Change</th>
+<th style="width:180px;">Trade</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for stock in stocks %}
+
+<tr>
+
+<td>
+<span class="badge bg-dark fs-6">
+{{ stock.symbol }}
+</span>
+</td>
+
+<td>
+<strong>{{ stock.name }}</strong>
+</td>
+
+<td>
+<span class="badge bg-info text-dark">
+{{ stock.sector }}
+</span>
+</td>
+
+<td class="fw-bold text-success price-value">
+₹{{ stock.price }}
+</td>
+
+<td>
+<span class="text-success fw-bold">
+<i class="bi bi-arrow-up"></i> +1.2%
+</span>
+</td>
+
+<td>
+
+<div class="d-flex gap-2">
+
+<a href="{{ url_for('buy_stock', stock_id=stock.id) }}"
+class="btn btn-success btn-sm">
+
+<i class="bi bi-cart-plus"></i> Buy
+
+</a>
+
+<a href="{{ url_for('sell_stock', stock_id=stock.id) }}"
+class="btn btn-outline-danger btn-sm">
+
+<i class="bi bi-cash-stack"></i> Sell
+
+</a>
+
+</div>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Live Stock Chart -->
+
+<div class="card shadow-sm border-0 mt-4">
+
+<div class="card-header bg-dark text-white">
+Live Market Chart
+</div>
+
+<div class="card-body">
+
+<div class="tradingview-widget-container">
+
+<div id="tradingview_chart"></div>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+
+<script>
+
+new TradingView.widget({
+"width": "100%",
+"height": 450,
+"symbol": "NSE:RELIANCE",
+"interval": "D",
+"timezone": "Asia/Kolkata",
+"theme": "light",
+"style": "1",
+"locale": "en",
+"toolbar_bg": "#f1f3f6",
+"enable_publishing": false,
+"container_id": "tradingview_chart"
+});
+
+</script>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Search Script -->
+
+<script>
+
+document.getElementById("stockSearch").addEventListener("keyup", function() {
+
+let value = this.value.toLowerCase();
+
+let rows = document.querySelectorAll("#stockTable tbody tr");
+
+rows.forEach(row => {
+
+row.style.display = row.innerText.toLowerCase().includes(value) ? "" : "none";
+
+});
+
+});
+
+</script>
+
+<!-- Fake Price Movement Script -->
+
+<script>
+
+function simulatePriceChange(){
+
+let prices = document.querySelectorAll(".price-value");
+
+prices.forEach(price => {
+
+let current = parseFloat(price.innerText.replace("₹",""));
+
+let change = (Math.random()*10 - 5).toFixed(2);
+
+let newPrice = (current + parseFloat(change)).toFixed(2);
+
+price.innerText = "₹" + newPrice;
+
+});
+
+}
+
+setInterval(simulatePriceChange,5000);
+
+</script>
+
+{% endblock %}
