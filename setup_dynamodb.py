@@ -8,7 +8,7 @@ from datetime import datetime, date
 # For local development
 AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_REGION = os.environ.get('AWS_REGION', 'ap-south-1')
+AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
 
 # Set up boto3 session
 if AWS_ACCESS_KEY and AWS_SECRET_KEY:
