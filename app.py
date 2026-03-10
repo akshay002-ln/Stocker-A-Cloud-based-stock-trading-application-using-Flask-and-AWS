@@ -11,7 +11,7 @@ app.secret_key = "stocker_secret_2024"
 
 # ================= AWS CONFIGURATION =================
 
-AWS_REGION = "ap-south-1"
+AWS_REGION = "us-east-1"
 
 session_aws = boto3.Session(region_name=AWS_REGION)
 
