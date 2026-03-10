@@ -229,15 +229,14 @@ h6 {
 /* Index Page Header
 ------------------------------*/
 .index-page .header {
-  --background-color: rgba(0, 0, 0, 0);
+  --background-color: #0f172a;
 }
 
 /* Index Page Header on Scroll
 ------------------------------*/
 .index-page.scrolled .header {
-  --background-color: rgba(0, 0, 0, 0.8);
+  --background-color: #020617;
 }
-
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
